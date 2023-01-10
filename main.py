@@ -2,8 +2,8 @@ import pygame
 
 pygame.init()
 
-bg = pygame.image.load("map.png")
-car = pygame.image.load("car(right).png")
+bg = pygame.image.load("car and map testing/map.png")
+car = pygame.image.load("car and map testing/car(right).png")
 
 window = pygame.display.set_mode((555, 555))
 screen = pygame.Surface((555, 555))
