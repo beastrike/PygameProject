@@ -1,40 +1,62 @@
 import pygame
 import button
 import menu
+import os
+import sys
+
 pygame.init()
+
+
+def load_image(name, colorkey=None):
+    fullname = os.path.join('data', name)
+    # если файл не существует, то выходим
+    if not os.path.isfile(fullname):
+        print(f"Файл с изображением '{fullname}' не найден")
+        sys.exit()
+    image = pygame.image.load(fullname)
+    if colorkey is not None:
+        image = image.convert()
+        if colorkey == -1:
+            colorkey = image.get_at((0, 0))
+        image.set_colorkey(colorkey)
+    else:
+        image = image.convert_alpha()
+    return image
+
 
 bg = pygame.image.load("car and map testing/map.png")
 car = pygame.image.load("car and map testing/car(right).png")
 
+SIZE = WIDTH, HEIGHT = 1280, 720
+FPS = 60
 
-
-
-window = pygame.display.set_mode((1280, 720))
-screen = pygame.Surface((1280, 720))
+window = pygame.display.set_mode(SIZE)
+screen = pygame.Surface(SIZE)
 start_game = True
 x_car = 0
 y_car = 255
 
+clock = pygame.time.Clock()
 while start_game == True:
     for i in pygame.event.get():
         if i.type == pygame.QUIT:
             start_game = False
-        if i.type == pygame.KEYDOWN and i.key == pygame.K_s:
-            y_car += 25
-        if i.type == pygame.KEYDOWN and i.key == pygame.K_d:
-            x_car += 25
-        if i.type == pygame.KEYDOWN and i.key == pygame.K_a:
-            x_car -= 25
-        if i.type == pygame.KEYDOWN and i.key == pygame.K_w:
-            y_car -= 25
-        if i.type == pygame.KEYDOWN and i.key == pygame.K_ESCAPE:
-            menu.Menu_screeen()
-
+        elif i.type == pygame.KEYDOWN:
+            if i.key == pygame.K_s:
+                y_car += 25
+            elif i.key == pygame.K_d:
+                x_car += 25
+            elif i.key == pygame.K_a:
+                x_car -= 25
+            elif i.key == pygame.K_w:
+                y_car -= 25
+            elif i.key == pygame.K_ESCAPE:
+                menu.Menu_screeen()
+                window = pygame.display.set_mode(SIZE)
 
     screen.blit(bg, (0, 0))
     screen.blit(car, (x_car, y_car))
-    screen.blit(screen, (0, 0))
+    window.blit(screen, (0, 0))
     pygame.display.update()
-
-
+    clock.tick(FPS)
 pygame.quit()

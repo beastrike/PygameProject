@@ -1,5 +1,11 @@
 import pygame
 import button
+import sys
+
+
+def quit_game():
+    pygame.quit()
+    sys.exit()
 
 
 def Menu_screeen():
@@ -9,14 +15,11 @@ def Menu_screeen():
 
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-    game_paused = False
+    FPS = 30
     menu_state = "main"
-
     font = pygame.font.SysFont("arialblack", 40)
-
     # define colours
     TEXT_COL = (255, 255, 255)
-
     # load button images
     resume_img = pygame.image.load("images/button_resume.png").convert_alpha()
     options_img = pygame.image.load("images/button_options.png").convert_alpha()
@@ -35,32 +38,26 @@ def Menu_screeen():
         img = font.render(text, True, text_col)
         screen.blit(img, (x, y))
 
+    clock = pygame.time.Clock()
     # game loop
-    run = True
-    while run:
-
+    while True:
         screen.fill((52, 78, 91))
-
-        # check if game is paused
-        if game_paused == True:
-            # check menu state
-            if menu_state == "main":
-                # draw pause screen buttons
-                if resume_button.draw(screen):
-                    game_paused = False
-                if options_button.draw(screen):
-                    menu_state = "options"
-                if quit_button.draw(screen):
-                    run = False
-            # check if the options menu is open
-            if menu_state == "options":
-                # draw the different options buttons
-                if audio_button.draw(screen):
-                    print("Audio Settings")
-                if back_button.draw(screen):
-                    menu_state = "main"
-        else:
-            draw_text("", font, TEXT_COL, 160, 250)
+        # check menu state
+        if menu_state == "main":
+            # draw pause screen buttons
+            if resume_button.draw(screen):
+                return
+            if options_button.draw(screen):
+                menu_state = "options"
+            if quit_button.draw(screen):
+                quit_game()
+        # check if the options menu is open
+        if menu_state == "options":
+            # draw the different options buttons
+            if audio_button.draw(screen):
+                print("Audio Settings")
+            if back_button.draw(screen):
+                menu_state = "main"
 
         # event handler
         for event in pygame.event.get():
@@ -68,12 +65,13 @@ def Menu_screeen():
                 if event.key == pygame.K_ESCAPE:
                     game_paused = True
             if event.type == pygame.QUIT:
-                run = False
+                quit_game()
 
         pygame.display.update()
+        clock.tick(FPS)
 
 
 if __name__ == '__main__':
     pygame.init()
     Menu_screeen()
-    pygame.quit()
+    quit_game()
