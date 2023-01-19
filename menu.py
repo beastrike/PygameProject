@@ -29,8 +29,8 @@ def Menu_screeen():
     resume_button = button.Button(100, 80, resume_img, 1)
     options_button = button.Button(100, 250, options_img, 1)
     quit_button = button.Button(133, 420, quit_img, 1)
-    audio_button = button.Button(100, 200, audio_img, 1)
-    back_button = button.Button(220, 375, back_img, 1)
+    audio_button = button.Button(100, 120, audio_img, 1)
+    back_button = button.Button(100, 295, back_img, 1)
 
     def draw_text(text, font, text_col, x, y):
         img = font.render(text, True, text_col)
@@ -59,7 +59,6 @@ def Menu_screeen():
                     game_paused = True
             if event.type == pygame.QUIT:
                 quit_game()
-
         pygame.display.update()
         clock.tick(FPS)
 
