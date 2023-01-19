@@ -1,5 +1,4 @@
 import pygame
-import button
 import menu
 import os
 import sys
@@ -26,6 +25,7 @@ def load_image(name, colorkey=None):
 
 bg = pygame.image.load("car and map testing/map.png")
 car = pygame.image.load("car and map testing/car(right).png")
+
 
 SIZE = WIDTH, HEIGHT = 1280, 720
 FPS = 60

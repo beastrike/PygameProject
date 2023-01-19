@@ -1,0 +1,184 @@
+diff --git a/main.py b/main.py
+index 44cb06b..8aa5731 100644
+--- a/main.py
++++ b/main.py
+@@ -1,40 +1,60 @@
+ import pygame
+ import button
+ import menu
++
+ pygame.init()
+ 
+-bg = pygame.image.load("car and map testing/map.png")
+-car = pygame.image.load("car and map testing/car(right).png")
+ 
++def load_image(name, colorkey=None):
++    fullname = os.path.join('data', name)
++    # если файл не существует, то выходим
++    if not os.path.isfile(fullname):
++        print(f"Файл с изображением '{fullname}' не найден")
++        sys.exit()
++    image = pygame.image.load(fullname)
++    if colorkey is not None:
++        image = image.convert()
++        if colorkey == -1:
++            colorkey = image.get_at((0, 0))
++        image.set_colorkey(colorkey)
++    else:
++        image = image.convert_alpha()
++    return image
+ 
+ 
++bg = pygame.image.load("car and map testing/map.png")
++car = pygame.image.load("car and map testing/car(right).png")
+ 
+-window = pygame.display.set_mode((1280, 720))
+-screen = pygame.Surface((1280, 720))
++SIZE = WIDTH, HEIGHT = 1280, 720
++FPS = 60
++
++window = pygame.display.set_mode(SIZE)
++screen = pygame.Surface(SIZE)
+ start_game = True
+ x_car = 0
+ y_car = 255
+ 
++clock = pygame.time.Clock()
+ while start_game == True:
+     for i in pygame.event.get():
+         if i.type == pygame.QUIT:
+             start_game = False
+-        if i.type == pygame.KEYDOWN and i.key == pygame.K_s:
+-            y_car += 25
+-        if i.type == pygame.KEYDOWN and i.key == pygame.K_d:
+-            x_car += 25
+-        if i.type == pygame.KEYDOWN and i.key == pygame.K_a:
+-            x_car -= 25
+-        if i.type == pygame.KEYDOWN and i.key == pygame.K_w:
+-            y_car -= 25
+-        if i.type == pygame.KEYDOWN and i.key == pygame.K_ESCAPE:
+-            menu.Menu_screeen()
+-
++        elif i.type == pygame.KEYDOWN:
++            if i.key == pygame.K_s:
++                y_car += 25
++            elif i.key == pygame.K_d:
++                x_car += 25
++            elif i.key == pygame.K_a:
++                x_car -= 25
++            elif i.key == pygame.K_w:
++                y_car -= 25
++            elif i.key == pygame.K_ESCAPE:
++                menu.Menu_screeen()
++                window = pygame.display.set_mode(SIZE)
+ 
+     screen.blit(bg, (0, 0))
+     screen.blit(car, (x_car, y_car))
+-    screen.blit(screen, (0, 0))
++    window.blit(screen, (0, 0))
+     pygame.display.update()
+-
+-
+-pygame.quit()
+\ No newline at end of file
++    clock.tick(FPS)
++pygame.quit()
+diff --git a/menu.py b/menu.py
+index 1f459b2..d8ad0ac 100644
+--- a/menu.py
++++ b/menu.py
+@@ -1,5 +1,11 @@
+ import pygame
+ import button
++import sys
++
++
++def quit_game():
++    pygame.quit()
++    sys.exit()
+ 
+ 
+ def Menu_screeen():
+@@ -9,14 +15,11 @@ def Menu_screeen():
+ 
+     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+ 
+-    game_paused = False
++    FPS = 30
+     menu_state = "main"
+-
+     font = pygame.font.SysFont("arialblack", 40)
+-
+     # define colours
+     TEXT_COL = (255, 255, 255)
+-
+     # load button images
+     resume_img = pygame.image.load("images/button_resume.png").convert_alpha()
+     options_img = pygame.image.load("images/button_options.png").convert_alpha()
+@@ -35,32 +38,26 @@ def Menu_screeen():
+         img = font.render(text, True, text_col)
+         screen.blit(img, (x, y))
+ 
++    clock = pygame.time.Clock()
+     # game loop
+-    run = True
+-    while run:
+-
++    while True:
+         screen.fill((52, 78, 91))
+-
+-        # check if game is paused
+-        if game_paused == True:
+-            # check menu state
+-            if menu_state == "main":
+-                # draw pause screen buttons
+-                if resume_button.draw(screen):
+-                    game_paused = False
+-                if options_button.draw(screen):
+-                    menu_state = "options"
+-                if quit_button.draw(screen):
+-                    run = False
+-            # check if the options menu is open
+-            if menu_state == "options":
+-                # draw the different options buttons
+-                if audio_button.draw(screen):
+-                    print("Audio Settings")
+-                if back_button.draw(screen):
+-                    menu_state = "main"
+-        else:
+-            draw_text("", font, TEXT_COL, 160, 250)
++        # check menu state
++        if menu_state == "main":
++            # draw pause screen buttons
++            if resume_button.draw(screen):
++                return
++            if options_button.draw(screen):
++                menu_state = "options"
++            if quit_button.draw(screen):
++                quit_game()
++        # check if the options menu is open
++        if menu_state == "options":
++            # draw the different options buttons
++            if audio_button.draw(screen):
++                print("Audio Settings")
++            if back_button.draw(screen):
++                menu_state = "main"
+ 
+         # event handler
+         for event in pygame.event.get():
+@@ -68,12 +65,13 @@ def Menu_screeen():
+                 if event.key == pygame.K_ESCAPE:
+                     game_paused = True
+             if event.type == pygame.QUIT:
+-                run = False
++                quit_game()
+ 
+         pygame.display.update()
++        clock.tick(FPS)
+ 
+ 
+ if __name__ == '__main__':
+     pygame.init()
+     Menu_screeen()
+-    pygame.quit()
++    quit_game()
