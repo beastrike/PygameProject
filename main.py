@@ -34,19 +34,21 @@ FPS = 60
 
 window = pygame.display.set_mode(SIZE)
 screen = pygame.Surface(SIZE)
-start_game = True
-start_menu = front_menu.front_menu()
+front_menu.front_menu()
+
+
 x_car = 0
 y_car = 255
-
-
 clock = pygame.time.Clock()
-while start_menu == front_menu.front_menu():
-    pygame.mixer.music.load(BACKGROUND_MUSIC)
-    pygame.mixer.music.play(-1)
+start_game = True
+
+pygame.mixer.music.load(BACKGROUND_MUSIC)
+pygame.mixer.music.play(-1)
+
+while start_game:
     for i in pygame.event.get():
         if i.type == pygame.QUIT:
-            start_menu = False
+            start_game = False
         elif i.type == pygame.KEYDOWN:
             if i.key == pygame.K_s:
                 y_car += 25
