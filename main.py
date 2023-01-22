@@ -1,5 +1,6 @@
 import pygame
 import menu
+import front_menu
 import os
 import sys
 
@@ -25,6 +26,7 @@ def load_image(name, colorkey=None):
 
 bg = pygame.image.load("car and map testing/map.png")
 car = pygame.image.load("car and map testing/car(right).png")
+BACKGROUND_MUSIC = 'assets and music/fon.mp3'
 
 
 SIZE = WIDTH, HEIGHT = 1280, 720
@@ -33,14 +35,18 @@ FPS = 60
 window = pygame.display.set_mode(SIZE)
 screen = pygame.Surface(SIZE)
 start_game = True
+start_menu = front_menu.front_menu()
 x_car = 0
 y_car = 255
 
+
 clock = pygame.time.Clock()
-while start_game == True:
+while start_menu == front_menu.front_menu():
+    pygame.mixer.music.load(BACKGROUND_MUSIC)
+    pygame.mixer.music.play(-1)
     for i in pygame.event.get():
         if i.type == pygame.QUIT:
-            start_game = False
+            start_menu = False
         elif i.type == pygame.KEYDOWN:
             if i.key == pygame.K_s:
                 y_car += 25
