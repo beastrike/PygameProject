@@ -24,7 +24,7 @@ def load_image(name, colorkey=None):
     return image
 
 
-bg = pygame.image.load("car and map testing/map.png")
+bg = pygame.image.load("car and map testing/map1.png")
 car = pygame.image.load("car and map testing/car(right).png")
 BACKGROUND_MUSIC = 'assets and music/fon.mp3'
 
