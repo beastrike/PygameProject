@@ -24,7 +24,7 @@ def load_image(name, colorkey=None):
     return image
 
 
-bg = pygame.image.load("car and map testing/map.png")
+bg = pygame.image.load("images/map1 (1).png")
 car = pygame.image.load("car and map testing/car(right).png")
 BACKGROUND_MUSIC = 'assets and music/fon.mp3'
 
@@ -62,7 +62,7 @@ while start_game:
                 menu.Menu_screeen()
                 window = pygame.display.set_mode(SIZE)
 
-    screen.blit(bg, (0, 0))
+    screen.blit(bg, (270, 0))
     screen.blit(car, (x_car, y_car))
     window.blit(screen, (0, 0))
     pygame.display.update()
