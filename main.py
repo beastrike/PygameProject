@@ -24,10 +24,14 @@ def load_image(name, colorkey=None):
     return image
 
 
+map_massiv = open('map.txt').read().split('\n')
+final = []
+for i in map_massiv:
+    print(i)
+    final.append(list(map(int, list(i))))
 bg = pygame.image.load("images/map1 (1).png")
 car = pygame.image.load("car and map testing/car(right).png")
 BACKGROUND_MUSIC = 'assets and music/fon.mp3'
-
 
 SIZE = WIDTH, HEIGHT = 1280, 720
 FPS = 60
@@ -36,9 +40,8 @@ window = pygame.display.set_mode(SIZE)
 screen = pygame.Surface(SIZE)
 front_menu.front_menu()
 
-
-x_car = 0
-y_car = 255
+x_car = 348
+y_car = 356
 clock = pygame.time.Clock()
 start_game = True
 
@@ -46,25 +49,28 @@ pygame.mixer.music.load(BACKGROUND_MUSIC)
 pygame.mixer.music.play(-1)
 
 while start_game:
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_d]:
+        x_car += 1
+    elif keys[pygame.K_a]:
+        x_car -= 1
+    elif keys[pygame.K_w]:
+        y_car -= 1
+    elif keys[pygame.K_s]:
+        y_car += 1
     for i in pygame.event.get():
         if i.type == pygame.QUIT:
             start_game = False
         elif i.type == pygame.KEYDOWN:
-            if i.key == pygame.K_s:
-                y_car += 25
-            elif i.key == pygame.K_d:
-                x_car += 25
-            elif i.key == pygame.K_a:
-                x_car -= 25
-            elif i.key == pygame.K_w:
-                y_car -= 25
-            elif i.key == pygame.K_ESCAPE:
+            if i.key == pygame.K_ESCAPE:
                 menu.Menu_screeen()
+                print(x_car, y_car)
                 window = pygame.display.set_mode(SIZE)
-
-    screen.blit(bg, (270, 0))
+    screen.fill(000000)
+    screen.blit(bg, (280, 0))
     screen.blit(car, (x_car, y_car))
     window.blit(screen, (0, 0))
     pygame.display.update()
+    pygame.display.flip()
     clock.tick(FPS)
 pygame.quit()
