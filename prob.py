@@ -1,7 +1,5 @@
-map_massiv = open('map.txt').read().split('\n')
-final = []
-for i in map_massiv:
-    print(i)
-    final.append(list(map(int, list(i))))
+import random
 
-print(final)
+kfdsa = [1, 2, 3, 23, 7, 4, 5, 6]
+
+print(random.sample(kfdsa, 3))

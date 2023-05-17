@@ -8,6 +8,31 @@ def quit_game():
     sys.exit()
 
 
+def game_over(score):
+    SCREEN_WIDTH = 1280
+    SCREEN_HEIGHT = 720
+
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    FPS = 30
+    bg = pygame.image.load("images/GAME OVER SCREEN.png").convert_alpha()
+    f1 = pygame.font.Font("FSEX300.ttf", 60)
+    f2 = pygame.font.Font("FSEX300.ttf", 60)
+    best_score = open("best_score.txt").read()
+    text_score = f1.render(str(score), True, (254, 254, 254))
+    text_best_score = f2.render(best_score, True, (254, 254, 254))
+    clock = pygame.time.Clock()
+
+    while True:
+        screen.blit(bg, (0, 0))
+        screen.blit(text_score, (573, 313))
+        screen.blit(text_best_score, (598, 476))
+        for event in pygame.event.get():
+            if event.type == pygame.K_RETURN:
+                quit_game()
+        pygame.display.update()
+        clock.tick(FPS)
+
+
 def Menu_screeen():
     # create game window
     SCREEN_WIDTH = 1280
