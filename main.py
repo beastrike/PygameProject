@@ -71,15 +71,21 @@ start_game = True
 # pygame.mixer.music.play(-1)
 
 
-time_limit = 120
+time_limit = 5
 start_time = time.time()
 elapsed_time = 0
 text_timer = f2.render(str(time_limit - int(elapsed_time)), True, (254, 254, 254))
 while start_game:
     elapsed_time = time.time() - start_time
     if elapsed_time > time_limit:
+        best_score = int(open("best_score.txt").read())
+        if best_score < sobrano:
+            f = open('best_score.txt', "w")
+            f.write(str(sobrano))
+            f.close()
         print("GAME OVER")
         menu.game_over(sobrano)
+        window = pygame.display.set_mode(SIZE)
     text_counter = f1.render(str(sobrano), True, (254, 254, 254))
     text_timer = f2.render(
         f'{str((time_limit - int(elapsed_time)) // 60)}:{(time_limit - int(elapsed_time)) % 60:02}', True,

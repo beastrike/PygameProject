@@ -24,10 +24,13 @@ def game_over(score):
 
     while True:
         screen.blit(bg, (0, 0))
-        screen.blit(text_score, (573, 313))
+        screen.blit(text_score, (598, 313))
         screen.blit(text_best_score, (598, 476))
         for event in pygame.event.get():
-            if event.type == pygame.K_RETURN:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    quit_game()
+            if event.type == pygame.QUIT:
                 quit_game()
         pygame.display.update()
         clock.tick(FPS)
